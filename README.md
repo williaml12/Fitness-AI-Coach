@@ -1,1 +1,1 @@
-# Fitness-AI-Coach
+# Fitness AI Coach
