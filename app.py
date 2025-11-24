@@ -1,86 +1,84 @@
 import streamlit as st
+from PIL import Image
+import io
 
-# --- Page config ---
-st.set_page_config(page_title="FitFuel: AI Coach", layout="wide")
+# Page config
+st.set_page_config(
+    page_title="ResumeCraft AI – Your Smart Resume Reviewer",
+    page_icon=":rocket:",
+    layout="wide",
+)
 
-# --- Initialize session state ---
-if "chat_history" not in st.session_state:
-    st.session_state.chat_history = []
+# --- Header / Hero Section ---
+# Optional background image
+try:
+    hero_img = Image.open("hero_background.jpg")
+    st.image(hero_img, use_column_width=True)
+except Exception:
+    pass
 
-if "user_profile" not in st.session_state:
-    st.session_state.user_profile = {
-        "height": None,
-        "weight": None,
-        "goal": None,
-        "preference": None
-    }
+st.title("ResumeCraft AI")
+st.subheader("Your Smart Resume Reviewer")
+st.markdown("""
+Upload your resume and get instant feedback on structure, content, and ATS-friendliness.
+""")
 
-# --- Sidebar: user profile input ---
-with st.sidebar:
-    st.header("Your Profile")
-    height = st.number_input("Height (cm)", min_value=50, max_value=250, value=170)
-    weight = st.number_input("Weight (kg)", min_value=20, max_value=200, value=70)
-    goal = st.selectbox("Fitness Goal", ["Lose weight", "Build muscle", "Maintain"])
-    preference = st.selectbox("Workout Preference", ["Home", "Gym", "No preference"])
-    if st.button("Save Profile"):
-        st.session_state.user_profile = {
-            "height": height,
-            "weight": weight,
-            "goal": goal,
-            "preference": preference
-        }
-        st.success("Profile saved!")
+# ―― Feature / Info Section ――
+st.markdown("---")
+col1, col2, col3 = st.columns(3)
 
-# --- Main app: Chat + Plan ---
-st.title("🤖 FitFuel: Your AI Fitness Coach")
+with col1:
+    st.header("📄 Upload")
+    st.write("Simply drag & drop your resume (PDF or DOCX).")
 
-# Show saved profile
-profile = st.session_state.user_profile
-st.write("**Your Profile**:", profile)
+with col2:
+    st.header("🔍 Analyze")
+    st.write("Our AI reviews your resume for clarity, relevance, and formatting.")
 
-# Chat area
-st.subheader("Chat with your AI Coach")
-user_input = st.text_area("Ask me anything about workouts, meals, or strategy:", height=100)
+with col3:
+    st.header("✅ Improve")
+    st.write("Receive actionable suggestions to make your resume stand out.")
 
-if st.button("Send"):
-    if user_input.strip() != "":
-        # Here: call your LLM / AI backend
-        answer = ai_coach_response(user_input, profile)  # you define this function
-        st.session_state.chat_history.append(("You", user_input))
-        st.session_state.chat_history.append(("Coach", answer))
-    else:
-        st.warning("Please type something first.")
+st.markdown("---")
 
-# Display chat history
-for speaker, text in st.session_state.chat_history:
-    if speaker == "You":
-        st.markdown(f"**You:** {text}")
-    else:
-        st.markdown(f"**Coach:** {text}")
-    st.markdown("---")
+# ―― Upload Section ――
+uploaded_file = st.file_uploader("Choose your resume file", type=["pdf","docx"])
 
-# Optionally: Generate a weekly plan
-if st.button("Generate Week Plan"):
-    plan = generate_weekly_plan(profile)  # you define this
-    st.subheader("Your Weekly Plan")
-    st.write(plan)  # could be a dict / dataframe or whatever structure you want
+if uploaded_file is not None:
+    # Show preview or file info
+    file_details = {"filename": uploaded_file.name, "filetype": uploaded_file.type, "filesize": uploaded_file.size}
+    st.write(file_details)
+    
+    if st.button("🎯 Review My Resume"):
+        with st.spinner("Analyzing your resume..."):
+            # Your model logic here: e.g., parse the file, run AI model
+            # result = analyse_resume(uploaded_file)
+            # For demo let's mock:
+            result = {
+                "Overall Score": "78%",
+                "Strengths": ["Clear summary section", "Relevant keywords matched"],
+                "Areas to Improve": ["Add quantifiable achievements", "Shorter bullet points"],
+                "ATS Friendly": "Yes"
+            }
+            
+        st.success("Analysis complete!")
+        
+        # ―― Result Display ――
+        st.header("🔍 Your Review")
+        st.subheader("Overall Score")
+        st.metric(label="", value=result["Overall Score"])
+        
+        st.subheader("Strengths")
+        for s in result["Strengths"]:
+            st.write("• " + s)
+        
+        st.subheader("Areas to Improve")
+        for a in result["Areas to Improve"]:
+            st.write("• " + a)
+        
+        st.subheader("ATS Friendly Check")
+        st.write(result["ATS Friendly"])
 
-# Function definitions (mock)
-def ai_coach_response(message, profile):
-    # This is where you integrate your AI model / API
-    # For example:
-    # response = call_bedrock_model(prompt=..., user_profile=profile)
-    # return response
-    return f"I got your message: '{message}' with profile {profile}. (This is a stubbed response.)"
-
-def generate_weekly_plan(profile):
-    # Create a fake plan for example
-    return {
-        "Monday": "30 min cardio",
-        "Tuesday": "Strength training (upper body)",
-        "Wednesday": "Rest or light walk",
-        "Thursday": "Strength training (lower body)",
-        "Friday": "Yoga / Mobility",
-        "Saturday": "HIIT workout",
-        "Sunday": "Rest"
-    }
+# ―― Footer Section ――
+st.markdown("---")
+st.write("Built with ♥ using Streamlit and AI. © 2025 Your Company Name")
