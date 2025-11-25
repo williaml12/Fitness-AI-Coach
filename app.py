@@ -1,5 +1,11 @@
-import streamlit as st
-from PIL import Image
+import google.generativeai as genai
+import docx2txt
+import PyPDF2
+
+api_key = st.secrets["GOOGLE_API_KEY"]
+genai.configure(api_key=api_key)
+model = genai.GenerativeModel("gemini-1.5-pro")
+
 
 # ---------------------------- PAGE CONFIG ----------------------------
 st.set_page_config(
@@ -112,41 +118,75 @@ st.markdown("---")
 # ---------------------------- ANALYSIS ----------------------------
 if uploaded_file and job_title:
     if st.button("🔍 Analyze My Resume"):
-        with st.spinner("Analyzing your resume..."):
-            # Mock result (replace with your AI output)
-            result = {
-                "score": "82%",
-                "summary": "Your resume is strong but can use more achievements.",
-                "strengths": [
-                    "Clear summary section",
-                    "Relevant work experience"
-                ],
-                "weaknesses": [
-                    "Needs quantifiable results",
-                    "Missing industry keywords"
-                ],
-                "alignment": "Matches 70% of job requirements"
-            }
+        with st.spinner("Analyzing your resume with Google Gemini AI..."):
 
-        st.success("Analysis complete!")
+            # Extract resume text
+            resume_text = extract_text_from_file(uploaded_file)
 
-        # ----- OUTPUT -----
+            if not resume_text.strip():
+                st.error("Could not extract text from file. Make sure it is a valid PDF or DOCX.")
+                st.stop()
+
+            # Create the prompt for Gemini
+            prompt = f"""
+You are an expert resume reviewer.
+
+Analyze the resume content below and evaluate it for clarity, structure, relevance, and alignment 
+with the target job information.
+
+Return your response in clean structured JSON with these keys only:
+- score (0–100%)
+- summary
+- strengths (list)
+- weaknesses (list)
+- alignment (description)
+
+--------------------
+RESUME CONTENT:
+{resume_text}
+
+--------------------
+TARGET JOB TITLE: {job_title}
+
+JOB DESCRIPTION:
+{job_description}
+
+JOB REQUIREMENTS:
+{job_requirements}
+"""
+
+            # Call Gemini
+            response = model.generate_content(prompt)
+            cleaned = response.text.strip()
+
+            # Convert AI JSON to Python dict
+            import json
+            try:
+                result = json.loads(cleaned)
+            except:
+                st.error("Gemini returned an invalid response. Print raw output below:")
+                st.code(cleaned)
+                st.stop()
+
+        # ----------- DISPLAY RESULTS -----------
+        st.success("Resume analysis complete!")
+
         st.header("📊 Results Overview")
-        st.metric("Resume Score", result["score"])
+        st.metric("Resume Score", result.get("score", "N/A"))
 
         st.subheader("🧠 Summary")
-        st.write(result["summary"])
+        st.write(result.get("summary", ""))
 
         st.subheader("⭐ Strengths")
-        for s in result["strengths"]:
+        for s in result.get("strengths", []):
             st.write("• " + s)
 
         st.subheader("⚠️ Weaknesses")
-        for w in result["weaknesses"]:
+        for w in result.get("weaknesses", []):
             st.write("• " + w)
 
         st.subheader("🎯 Job Alignment")
-        st.write(result["alignment"])
+        st.write(result.get("alignment", ""))
 
         st.markdown("---")
 
@@ -154,10 +194,14 @@ if uploaded_file and job_title:
         st.header("💬 Ask a Follow-Up Question")
         q = st.text_input("Example: How can I improve my skills section?")
         if st.button("Ask"):
-            st.info("AI answer will appear here. (Add your model logic.)")
+            follow_resp = model.generate_content(
+                f"Follow-up question:\n{q}\n\nHere is the previous resume evaluation:\n{result}"
+            )
+            st.info(follow_resp.text)
 
 else:
     st.info("Please upload your resume and enter a target job title to proceed.")
+
 
 # ---------------------------- FOOTER ----------------------------
 st.markdown("---")
