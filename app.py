@@ -62,9 +62,9 @@
 # # -----------------------
 # st.subheader("🎯 Target Job / Industry")
 
-# job_title = st.text_input("Job Title (optional)")
+# job_title = st.text_input("Job Title")
 # job_description = st.text_area(
-#     "Job Description / Requirements (optional)",
+#     "Job Description / Requirements",
 #     height=150,
 #     placeholder="Paste job description or describe the role you're targeting..."
 # )
