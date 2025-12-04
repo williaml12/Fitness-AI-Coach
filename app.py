@@ -217,7 +217,8 @@ def truncate_text(text: str, max_chars: int = 30000) -> (str, bool):
 # UI
 # -----------------------
 st.title("📄 AI Resume Reviewer")
-st.write("Upload your resume and optionally paste a job description. The app extracts text from the file, sends it to Gemini, and returns a structured analysis.")
+# st.write("Upload your resume and optionally paste a job description. The app extracts text from the file, sends it to Gemini, and returns a structured analysis.")
+st.write("Upload your resume and get industry-ready feedback powered by Google Gemini.")
 
 uploaded_file = st.file_uploader("Upload resume (PDF, DOCX, TXT)", type=["pdf", "docx", "txt"])
 job_title = st.text_input("Target Job Title")
