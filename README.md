@@ -80,8 +80,7 @@ streamlit run app.py
 
 ---  
 
-🙋‍♂️ Author
-
+## 🙋‍♂️ Author
 Created by William Liu
 🔗 GitHub: https://github.com/williaml12
 
