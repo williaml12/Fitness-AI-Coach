@@ -38,8 +38,6 @@ It evaluates structure, clarity, tone, keywords, and job relevance — helping j
 
 ---
 
-
-
 ## ▶️ Getting Started (Local Setup)
 
 ### 1. Clone the repo
@@ -47,3 +45,13 @@ It evaluates structure, clarity, tone, keywords, and job relevance — helping j
 ```bash
 git clone https://github.com/your-username/AI-Resume-Reviewer.git
 cd AI-Resume-Reviewer
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+
+### 3. Run the app
+```bash
+streamlit run app.py
+
+
