@@ -78,4 +78,12 @@ streamlit run app.py
 - Add exportable PDF report
 - Add dark/light themes
 
-  
+---  
+
+🙋‍♂️ Author
+
+Created by William Liu
+🔗 GitHub: https://github.com/williaml12
+
+If you have suggestions or improvements, feel free to open an issue or submit a pull request!
+
