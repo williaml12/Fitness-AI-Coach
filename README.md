@@ -57,3 +57,14 @@ AI-Resume-Reviewer/
 ```bash
 git clone https://github.com/your-username/AI-Resume-Reviewer.git
 cd AI-Resume-Reviewer
+```
+
+### 2. Install dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the app
+```bash
+streamlit run app.py
+```
