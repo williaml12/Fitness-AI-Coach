@@ -38,7 +38,7 @@ It evaluates structure, clarity, tone, keywords, and job relevance — helping j
 
 ---
 
-## 📂 Project Structure
+# 📂 Project Structure
 
 ```plaintext
 AI-Resume-Reviewer/
