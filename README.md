@@ -81,8 +81,28 @@ streamlit run app.py
 ---  
 
 ## 🙋‍♂️ Author
-Created by William Liu
+Created by William Lu
 🔗 GitHub: https://github.com/williaml12
 
 If you have suggestions or improvements, feel free to open an issue or submit a pull request!
 
+---  
+
+## 📝 License
+
+This app is shared for personal and educational use.
+All AI-generated feedback should be used with discretion and is not a substitute for professional career services.
+
+The project is released under the MIT License.
+
+```yaml
+
+---
+
+If you want, I can also create:
+
+✅ `requirements.txt`  
+✅ a logo banner for your README  
+✅ a polished UI screenshot section  
+Just tell me!
+```
