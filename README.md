@@ -93,7 +93,7 @@ If you have suggestions or improvements, feel free to open an issue or submit a 
 This app is shared for personal and educational use.
 All AI-generated feedback should be used with discretion and is not a substitute for professional career services.
 
-The project is released under the MIT License.
+The project is released under the [MIT License](LICENSE).
 
 ```yaml
 
