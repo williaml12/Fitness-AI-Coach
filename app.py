@@ -214,11 +214,22 @@ def truncate_text(text: str, max_chars: int = 30000) -> (str, bool):
     return truncated, True
 
 # -----------------------
-# UI
+# 🎯 Header Section
 # -----------------------
-st.title("📄 AI Resume Reviewer")
-# st.write("Upload your resume and optionally paste a job description. The app extracts text from the file, sends it to Gemini, and returns a structured analysis.")
-st.write("Upload your resume and get industry-ready feedback powered by Google Gemini.")
+st.markdown("""
+<h1 style='text-align:center; margin-bottom:0;'>📄 AI Resume Reviewer</h1>
+<p style='text-align:center; font-size:18px; color:gray;'>
+Upload your resume and get industry-ready feedback powered by Google Gemini.
+</p>
+""", unsafe_allow_html=True)
+
+
+# # -----------------------
+# # UI
+# # -----------------------
+# st.title("📄 AI Resume Reviewer")
+# # st.write("Upload your resume and optionally paste a job description. The app extracts text from the file, sends it to Gemini, and returns a structured analysis.")
+# st.write("Upload your resume and get industry-ready feedback powered by Google Gemini.")
 
 st.write("---")
 
